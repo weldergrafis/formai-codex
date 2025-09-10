@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FormAI.Api.Models;
 
 public abstract class ModelBase
 {
-    public Guid Id { get; set; }
+    [Key]
+    public long Id { get; set; }
 }
