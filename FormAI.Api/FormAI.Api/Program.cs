@@ -1,4 +1,5 @@
 using FormAI.Api.Data;
+using FormAI.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,9 @@ builder.Services.AddOpenApi();
 
 // Configure Entity Framework Core to use SQL Server
 builder.Services.AddDbContext<AppDbContext>();
+
+// Service responsible for communication with Azure Blob Storage
+builder.Services.AddSingleton<AzureBlobStorageService>();
 
 var app = builder.Build();
 
