@@ -18,7 +18,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>();
 
 // Service responsible for communication with Azure Blob Storage
-builder.Services.AddSingleton<AzureBlobStorageService>();
+builder.Services.AddSingleton<StorageService>();
 
 var app = builder.Build();
 

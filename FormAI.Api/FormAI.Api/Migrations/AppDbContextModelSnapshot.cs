@@ -29,7 +29,13 @@ namespace FormAI.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Url")
+                    b.Property<bool>("IsResized")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUploaded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LocalPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

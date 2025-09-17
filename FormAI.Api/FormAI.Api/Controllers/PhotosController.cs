@@ -1,5 +1,5 @@
 using System.IO;
-using FormAI.Api.Controllers; // DTOs
+
 using FormAI.Api.Data;
 using FormAI.Api.Models;
 using FormAI.Api.Services;
@@ -10,49 +10,41 @@ namespace FormAI.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PhotosController : ControllerBase
+public class PhotosController(AppDbContext context, StorageService storageService) : ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly AzureBlobStorageService _storageService;
-
-    public PhotosController(AppDbContext context, AzureBlobStorageService storageService)
-    {
-        _context = context;
-        _storageService = storageService;
-    }
-
-    [HttpPost("scan")]
-    public async Task<ActionResult<PhotoScanResponseDto>> Scan([FromBody] PhotoScanRequestDto request)
+    [HttpPost("create")]
+    public async Task<ActionResult<CreateResponseDto>> Create([FromBody] CreateRequestDto request)
     {
         // Endpoint to scan directory and register photos
         var files = Directory.EnumerateFiles(request.RootPath, "*.jpg", SearchOption.AllDirectories);
-        var added = 0;
-        foreach (var file in files)
-        {
-            if (!await _context.Photos.AnyAsync(p => p.LocalPath == file))
-            {
-                _context.Photos.Add(new Photo { LocalPath = file });
-                added++;
-            }
-        }
-        await _context.SaveChangesAsync();
-        return Ok(new PhotoScanResponseDto(added));
+
+        var photos = files.Select(x => new Photo { LocalPath = x });
+        context.AddRange(photos);
+
+        await context.SaveChangesAsync();
+        return Ok(new CreateResponseDto { FilesCount = photos.Count() });
     }
 
     [HttpPost("upload")]
-    public async Task<ActionResult<PhotoUploadResponseDto>> Upload([FromBody] PhotoUploadRequestDto request)
+    public async Task<ActionResult<PhotoUploadResponseDto>> Upload()
     {
-        // Endpoint to upload pending photos to Azure Storage
-        var photos = await _context.Photos.Where(p => !p.Uploaded).ToListAsync();
-        var uploaded = 0;
-        foreach (var photo in photos)
-        {
-            var storageUrl = await _storageService.UploadAsync(photo.LocalPath);
-            photo.StorageUrl = storageUrl;
-            photo.Uploaded = true;
-            uploaded++;
-        }
-        await _context.SaveChangesAsync();
-        return Ok(new PhotoUploadResponseDto(uploaded));
+        var photos = await context.Photos.Where(x => !x.IsUploaded).ToListAsync();
+
+        await Parallel.ForEachAsync(
+            photos,
+            new ParallelOptions { MaxDegreeOfParallelism = 3 },
+            async (photo, token) =>
+            {
+                // Comentário: upload da foto em paralelo
+                await storageService.UploadPhotoAsync(photo, token);
+                photo.IsUploaded = true;
+
+                Console.WriteLine($"Foto {photo.Id} enviada");
+            });
+
+
+        await context.SaveChangesAsync();
+
+        return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
     }
 }

@@ -16,7 +16,9 @@ namespace FormAI.Api.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LocalPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsUploaded = table.Column<bool>(type: "bit", nullable: false),
+                    IsResized = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

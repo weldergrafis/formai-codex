@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FormAI.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250910133545_Initial")]
+    [Migration("20250916203429_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -32,7 +32,13 @@ namespace FormAI.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Url")
+                    b.Property<bool>("IsResized")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUploaded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LocalPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
