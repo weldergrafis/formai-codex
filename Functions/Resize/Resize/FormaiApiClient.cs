@@ -6,20 +6,13 @@ using System.Threading.Tasks;
 
 namespace Resize
 {
-    public class FormaiApiClient
+    public class FormaiApiClient(HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient;
-
-        public FormaiApiClient(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7228/api/photos/");
-        }
 
         // Marca a foto como redimensionada
         public async Task MarkResizedAsync(long photoId)
         {
-            var response = await _httpClient.PostAsync($"{photoId}/mark-resized", null);
+            var response = await httpClient.PostAsync($"{photoId}/mark-resized", null);
             response.EnsureSuccessStatusCode();
         }
     }

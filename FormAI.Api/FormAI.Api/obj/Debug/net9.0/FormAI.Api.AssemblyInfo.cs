@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FormAI.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9bf659b260a9edb80521607f72d11b67952514c4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+376562b5f7429baebe5b24f093e28b4469fd1520")]
 [assembly: System.Reflection.AssemblyProductAttribute("FormAI.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FormAI.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

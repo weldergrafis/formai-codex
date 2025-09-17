@@ -12,6 +12,12 @@ namespace FormAI.Api.Controllers;
 [Route("api/[controller]")]
 public class PhotosController(AppDbContext context, StorageService storageService, ServiceBusService serviceBusService) : ControllerBase
 {
+    [HttpGet("ping")]
+    public ActionResult Ping()
+    {
+        return Ok(DateTime.Now.ToString());
+    }
+
     [HttpPost("create")]
     public async Task<ActionResult<CreateResponseDto>> Create([FromBody] CreateRequestDto request)
     {
@@ -41,7 +47,7 @@ public class PhotosController(AppDbContext context, StorageService storageServic
             });
 
         // Marca que foram enviadsa
-        foreach(var photo in photos)
+        foreach (var photo in photos)
         {
             photo.IsUploaded = true;
         }
@@ -64,12 +70,27 @@ public class PhotosController(AppDbContext context, StorageService storageServic
     [HttpPost("{photoId:long}/mark-resized")]
     public async Task<ActionResult> MarkResized(long photoId)
     {
-        var photo = await context.Photos.SingleOrDefaultAsync(p => p.Id == photoId);
+        var photo = await context.Photos.SingleAsync(p => p.Id == photoId);
 
-        if (photo is null) return NotFound(new { message = $"Foto {photoId} não encontrada." });
         if (photo.IsResized) return Conflict(new { message = $"A foto {photoId} já está marcada que foi redimensionada." });
 
         photo.IsResized = true;
+        await context.SaveChangesAsync();
+
+        await serviceBusService.SendMessageAsync($"{photo.Id}", Queue.DetectFaces);
+
+        return NoContent();
+    }
+
+    // Comentário: marca a foto como redimensionada; retorna 404 se não existir e 409 se já estiver marcada
+    [HttpPost("{photoId:long}/mark-faces-detected")]
+    public async Task<ActionResult> MarkFacesDetected(long photoId)
+    {
+        var photo = await context.Photos.SingleAsync(p => p.Id == photoId);
+
+        if (photo.IsFaceDetected) return Conflict(new { message = $"A foto {photoId} já está marcada que suas faces foram detectadas." });
+
+        photo.IsFaceDetected = true;
         await context.SaveChangesAsync();
 
         return NoContent();

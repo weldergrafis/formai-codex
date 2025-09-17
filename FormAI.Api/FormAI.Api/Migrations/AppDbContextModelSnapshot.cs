@@ -29,6 +29,9 @@ namespace FormAI.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<bool>("IsFaceDetected")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsResized")
                         .HasColumnType("bit");
 

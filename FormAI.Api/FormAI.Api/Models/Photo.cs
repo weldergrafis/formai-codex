@@ -7,4 +7,6 @@ public class Photo : ModelBase
     public bool IsUploaded { get; set; }
 
     public bool IsResized { get; set; }
+
+    public bool IsFaceDetected { get; set; }
 }

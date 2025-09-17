@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DetectFaces": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7200",
+      "launchBrowser": false
+    }
+  }
+}
