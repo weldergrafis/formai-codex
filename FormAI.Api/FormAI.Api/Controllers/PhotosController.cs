@@ -59,4 +59,40 @@ public class PhotosController(AppDbContext context, StorageService storageServic
 
         return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
     }
+
+
+    [HttpPost("{photoId}/MarkResized")]
+    public async Task<ActionResult<PhotoUploadResponseDto>> MarkResized()
+    {
+        var photos = await context.Photos.Where(x => !x.IsUploaded).ToListAsync();
+
+        // Envia as fotos em paralelo
+        await Parallel.ForEachAsync(
+            photos,
+            new ParallelOptions { MaxDegreeOfParallelism = 3 },
+            async (photo, token) =>
+            {
+                await storageService.UploadPhotoAsync(photo, token);
+                Console.WriteLine($"Foto {photo.Id} enviada");
+            });
+
+        // Marca que foram enviadsa
+        foreach (var photo in photos)
+        {
+            photo.IsUploaded = true;
+        }
+
+        await context.SaveChangesAsync();
+
+        // Cria as mensagens em paralelo
+        await Parallel.ForEachAsync(
+           photos,
+           //new ParallelOptions { MaxDegreeOfParallelism = 3 },
+           async (photo, token) =>
+           {
+               await serviceBusService.SendMessageAsync($"{photo.Id}", Queue.Resize);
+           });
+
+        return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
+    }
 }
