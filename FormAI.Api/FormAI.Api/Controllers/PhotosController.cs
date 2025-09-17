@@ -60,39 +60,19 @@ public class PhotosController(AppDbContext context, StorageService storageServic
         return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
     }
 
-
-    [HttpPost("{photoId}/MarkResized")]
-    public async Task<ActionResult<PhotoUploadResponseDto>> MarkResized()
+    // Comentário: marca a foto como redimensionada; retorna 404 se não existir e 409 se já estiver marcada
+    [HttpPost("mark-resized/{photoId:long}")]
+    public async Task<ActionResult> MarkResized(long photoId)
     {
-        var photos = await context.Photos.Where(x => !x.IsUploaded).ToListAsync();
+        var photo = await context.Photos.SingleOrDefaultAsync(p => p.Id == photoId);
 
-        // Envia as fotos em paralelo
-        await Parallel.ForEachAsync(
-            photos,
-            new ParallelOptions { MaxDegreeOfParallelism = 3 },
-            async (photo, token) =>
-            {
-                await storageService.UploadPhotoAsync(photo, token);
-                Console.WriteLine($"Foto {photo.Id} enviada");
-            });
+        if (photo is null) return NotFound(new { message = $"Foto {photoId} não encontrada." });
+        if (photo.IsResized) return Conflict(new { message = $"A foto {photoId} já está marcada que foi redimensionada." });
 
-        // Marca que foram enviadsa
-        foreach (var photo in photos)
-        {
-            photo.IsUploaded = true;
-        }
-
+        photo.IsResized = true;
         await context.SaveChangesAsync();
 
-        // Cria as mensagens em paralelo
-        await Parallel.ForEachAsync(
-           photos,
-           //new ParallelOptions { MaxDegreeOfParallelism = 3 },
-           async (photo, token) =>
-           {
-               await serviceBusService.SendMessageAsync($"{photo.Id}", Queue.Resize);
-           });
-
-        return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
+        return NoContent();
     }
+
 }

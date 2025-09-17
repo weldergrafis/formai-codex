@@ -13,7 +13,7 @@
     "serviceBus": {
       "transportType": "amqpWebSockets",
       "autoCompleteMessages": false,
-      "maxConcurrentCalls": 1
+      "maxConcurrentCalls": 2
     }
   }
 }

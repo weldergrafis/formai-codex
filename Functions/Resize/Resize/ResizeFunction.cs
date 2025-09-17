@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Resize;
 
-public class ResizeFunction(ILogger<ResizeFunction> logger, StorageService storageService)
+public class ResizeFunction(ILogger<ResizeFunction> logger, StorageService storageService, FormaiApiClient apiClient)
 {
 
 
@@ -29,13 +29,13 @@ public class ResizeFunction(ILogger<ResizeFunction> logger, StorageService stora
         var originalBlobPath = $"originals/{photoId}.jpg";
         var originalStream = await storageService.DownloadAsync(originalBlobPath);
 
-        // Descarta imeditamente depois de ser usada para não ocupar memória
-        originalStream.Dispose();
-
         // Testes locais quando necessários
         //var originalStream = $@"\\srvdados\Pasta Pública\Jeferson\JEIVISON\Casamento.jpg";
 
         using var originalImage = await Image.LoadAsync(originalStream);
+
+        // Descarta imeditamente depois de ser usada para não ocupar memória
+        originalStream.Dispose();
 
         var maxSides = new List<int> { 512, 3072 };
 
@@ -53,6 +53,8 @@ public class ResizeFunction(ILogger<ResizeFunction> logger, StorageService stora
 
         // Complete the message
         await messageActions.CompleteMessageAsync(message);
+
+        await apiClient.MarkResizedAsync(photoId);
 
         var elapsed = DateTime.Now - start;
         Console.WriteLine($"Tempo: {elapsed}");

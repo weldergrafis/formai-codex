@@ -39,5 +39,4 @@ namespace Resize.Services;
             var blobClient = _client.GetBlobClient(blobName);
             await blobClient.UploadAsync(stream, overwrite: true, cancellationToken);
         }
-
     }
