@@ -19,7 +19,7 @@ namespace Resize
         // Marca a foto como redimensionada
         public async Task MarkResizedAsync(long photoId)
         {
-            var response = await _httpClient.PostAsync($"mark-resized/{photoId}", null);
+            var response = await _httpClient.PostAsync($"{photoId}/mark-resized", null);
             response.EnsureSuccessStatusCode();
         }
     }

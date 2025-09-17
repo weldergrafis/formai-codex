@@ -61,7 +61,7 @@ public class PhotosController(AppDbContext context, StorageService storageServic
     }
 
     // Comentário: marca a foto como redimensionada; retorna 404 se não existir e 409 se já estiver marcada
-    [HttpPost("mark-resized/{photoId:long}")]
+    [HttpPost("{photoId:long}/mark-resized")]
     public async Task<ActionResult> MarkResized(long photoId)
     {
         var photo = await context.Photos.SingleOrDefaultAsync(p => p.Id == photoId);
