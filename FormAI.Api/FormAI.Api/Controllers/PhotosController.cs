@@ -30,29 +30,31 @@ public class PhotosController(AppDbContext context, StorageService storageServic
     {
         var photos = await context.Photos.Where(x => !x.IsUploaded).ToListAsync();
 
+        // Envia as fotos em paralelo
         await Parallel.ForEachAsync(
             photos,
             new ParallelOptions { MaxDegreeOfParallelism = 3 },
             async (photo, token) =>
             {
-                // Comentário: upload da foto em paralelo
                 await storageService.UploadPhotoAsync(photo, token);
-                photo.IsUploaded = true;
-
                 Console.WriteLine($"Foto {photo.Id} enviada");
             });
 
+        // Marca que foram enviadsa
+        foreach(var photo in photos)
+        {
+            photo.IsUploaded = true;
+        }
 
         await context.SaveChangesAsync();
 
-        // Cria as mensagens
+        // Cria as mensagens em paralelo
         await Parallel.ForEachAsync(
            photos,
            //new ParallelOptions { MaxDegreeOfParallelism = 3 },
            async (photo, token) =>
            {
                await serviceBusService.SendMessageAsync($"{photo.Id}", Queue.Resize);
-               Console.WriteLine($"Mensagem criada. Foto: {photo.Id} - Fila: {Queue.Resize}");
            });
 
         return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
