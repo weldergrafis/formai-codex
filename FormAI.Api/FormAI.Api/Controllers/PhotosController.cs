@@ -10,7 +10,7 @@ namespace FormAI.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PhotosController(AppDbContext context, StorageService storageService) : ControllerBase
+public class PhotosController(AppDbContext context, StorageService storageService, ServiceBusService serviceBusService) : ControllerBase
 {
     [HttpPost("create")]
     public async Task<ActionResult<CreateResponseDto>> Create([FromBody] CreateRequestDto request)
@@ -44,6 +44,16 @@ public class PhotosController(AppDbContext context, StorageService storageServic
 
 
         await context.SaveChangesAsync();
+
+        // Cria as mensagens
+        await Parallel.ForEachAsync(
+           photos,
+           //new ParallelOptions { MaxDegreeOfParallelism = 3 },
+           async (photo, token) =>
+           {
+               await serviceBusService.SendMessageAsync($"{photo.Id}", Queue.Resize);
+               Console.WriteLine($"Mensagem criada. Foto: {photo.Id} - Fila: {Queue.Resize}");
+           });
 
         return Ok(new PhotoUploadResponseDto { UploadedCount = photos.Count });
     }
