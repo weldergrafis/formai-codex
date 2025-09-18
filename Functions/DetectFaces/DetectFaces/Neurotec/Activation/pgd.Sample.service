@@ -1,0 +1,19 @@
+# Usage:
+# Replace ACTIVATION_DIRECTORY_PATH with Activation (containing pgd) directory full path
+# Rename and move this configuration file to /etc/systemd/system/pgd.service 
+# Start: systemctl start pgd
+# Enable autostart: systemctl enable pgd
+
+[Unit]
+Description=Neurotechnology licensing service
+Before=docker.service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=ACTIVATION_DIRECTORY_PATH
+ExecStart=ACTIVATION_DIRECTORY_PATH/pgd -d
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

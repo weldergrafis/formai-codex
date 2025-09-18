@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace DetectFaces.Services
 {
-    internal class NeurotecHostService(NeurotecService neurotecService) : IHostedService
+    internal class NeurotecHostService() : IHostedService
     {
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            NeurotecService.Initialize();
+            NeurotecService.ObtainLicences();
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            neurotecService.Dispose();
+            NeurotecService.ReleaseLicenses();
             return Task.CompletedTask;
         }
     }

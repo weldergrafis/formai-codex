@@ -12,7 +12,7 @@ using Neurotec.IO;
 
 namespace DetectFaces.Services
 {
-    public class NeurotecService(NBiometricClient _nBiometricClient) : IDisposable
+    public class NeurotecService(NBiometricClient nBiometricClient) : IDisposable
     {
         public static NBiometricClient CreateBiometricClient()
         {
@@ -20,7 +20,7 @@ namespace DetectFaces.Services
             {
                 BiometricTypes = NBiometricType.Face,
 
-                UseDeviceManager = true,
+                //UseDeviceManager = true,
                 FacesTemplateSize = NTemplateSize.Large,
                 FacesMatchingSpeed = NMatchingSpeed.Low,
 
@@ -59,14 +59,14 @@ namespace DetectFaces.Services
             nSubject.IsMultipleSubjects = true;
 
 
-            var nTaskDetect = _nBiometricClient.CreateTask(
+            var nTaskDetect = nBiometricClient.CreateTask(
                 NBiometricOperations.Detect |
                 NBiometricOperations.DetectSegments |
                 NBiometricOperations.CreateTemplate,
                 nSubject);
 
 
-            await _nBiometricClient.PerformTaskAsync(nTaskDetect);
+            await nBiometricClient.PerformTaskAsync(nTaskDetect);
 
             if (nTaskDetect.Status == NBiometricStatus.Ok ||
                 nTaskDetect.Status == NBiometricStatus.ObjectNotFound ||
@@ -121,7 +121,7 @@ namespace DetectFaces.Services
 
         }
 
-        public static void Initialize()
+        public static void ObtainLicences()
         {
             NLicenseManager.TrialMode = true;
 
@@ -133,20 +133,19 @@ namespace DetectFaces.Services
         }
 
 
-        public void Dispose()
+        public static void ReleaseLicenses()
         {
             var options = new NeurotecLicenseOptions();
             NLicense.ReleaseComponents(options.ComponentsCsv);
-            _nBiometricClient.Dispose();
-           
         }
     }
 
     // Comentário: opções lidas do appsettings
     public sealed class NeurotecLicenseOptions
     {
-        public string Address { get; init; } = "/local";
-        public int Port { get; init; } = 6050;
+        //public string Address { get; init; } = "/local";
+        public string Address { get; init; } = "20.206.242.169";
+        public int Port { get; init; } = 6000;
         public bool TrialMode { get; init; } = true;
         public string[] Components { get; init; } =
         [
