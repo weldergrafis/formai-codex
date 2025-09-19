@@ -12,7 +12,7 @@ using Neurotec.IO;
 
 namespace DetectFaces.Services
 {
-    public class NeurotecService(NBiometricClient nBiometricClient) : IDisposable
+    public class NeurotecService(NBiometricClient nBiometricClient) 
     {
         public static NBiometricClient CreateBiometricClient()
         {
@@ -123,9 +123,11 @@ namespace DetectFaces.Services
 
         public static void ObtainLicences()
         {
-            NLicenseManager.TrialMode = true;
 
             var options = new NeurotecLicenseOptions();
+
+            NLicenseManager.TrialMode = options.TrialMode;
+
             var success = NLicense.ObtainComponents(options.Address, options.Port, options.ComponentsCsv);
             //var success = NLicense.ObtainComponents("10.1.1.176", 5001, components);
 
@@ -144,6 +146,7 @@ namespace DetectFaces.Services
     public sealed class NeurotecLicenseOptions
     {
         //public string Address { get; init; } = "/local";
+        //public int Port { get; init; } = 6050;
         public string Address { get; init; } = "20.206.242.169";
         public int Port { get; init; } = 6000;
         public bool TrialMode { get; init; } = true;

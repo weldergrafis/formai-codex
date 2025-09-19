@@ -19,8 +19,8 @@ builder.Services
 // Registra o HttpClient como singleton para o PhotoApiClient
 builder.Services.AddHttpClient<FormaiApiClient>(client =>
 {
-    //client.BaseAddress = new Uri("https://localhost:7228/api/photos/");
-    client.BaseAddress = new Uri("https://formai-api-f4dnhegdfye5eebe.brazilsouth-01.azurewebsites.net/api/photos/");
+    client.BaseAddress = new Uri("https://localhost:7228/api/photos/");
+    //client.BaseAddress = new Uri("https://formai-api-f4dnhegdfye5eebe.brazilsouth-01.azurewebsites.net/api/photos/");
 });
 
 builder.Services.AddSingleton<StorageService>();

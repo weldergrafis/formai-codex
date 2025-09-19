@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Exe</OutputType>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.0.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.0.2" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.22.2" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" />
+	</ItemGroup>
+
+	<!--Comentário: coleta todos os arquivos e subpastas de Neurotec-->
+	<ItemGroup>
+		<NeurotecFiles Include="$(ProjectDir)Neurotec\**\*" />
+	</ItemGroup>
+
+	<!--Comentário: copia para a pasta de build (bin/...) sem a raiz "Neurotec"-->
+	<Target Name="CopyNeurotecToOutput" AfterTargets="Build">
+		<Copy SourceFiles="@(NeurotecFiles)" DestinationFolder="$(OutDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+
+	<!--Comentário: copia para a pasta de publish (publish/...) sem a raiz "Neurotec"-->
+	<Target Name="CopyNeurotecToPublish" AfterTargets="Publish">
+		<Copy SourceFiles="@(NeurotecFiles)" DestinationFolder="$(PublishDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+
+
+	<ItemGroup>
+		<Reference Include="Neurotec">
+			<HintPath>Neurotec\Neurotec.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Accelerator.Admin.Rest">
+			<HintPath>Neurotec\Neurotec.Accelerator.Admin.Rest.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Biometrics">
+			<HintPath>Neurotec\Neurotec.Biometrics.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Biometrics.Client">
+			<HintPath>Neurotec\Neurotec.Biometrics.Client.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Biometrics.Gui">
+			<HintPath>Neurotec\Neurotec.Biometrics.Gui.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Devices">
+			<HintPath>Neurotec\Neurotec.Devices.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Gui">
+			<HintPath>Neurotec\Neurotec.Gui.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Licensing">
+			<HintPath>Neurotec\Neurotec.Licensing.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Media">
+			<HintPath>Neurotec\Neurotec.Media.dll</HintPath>
+		</Reference>
+		<Reference Include="Neurotec.Media.Processing">
+			<HintPath>Neurotec\Neurotec.Media.Processing.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

@@ -21,6 +21,298 @@ namespace FormAI.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FormAI.Api.Models.Face", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("AdditionalFacesDetected")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BackgroundUniformity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Beard")
+                        .HasColumnType("int");
+
+                    b.Property<double>("BothEyesCenterConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BothEyesCenterX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BothEyesCenterY")
+                        .HasColumnType("float");
+
+                    b.Property<long>("ComparisonOrder")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("CompressionArtifacts")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Contrast")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DarkGlasses")
+                        .HasColumnType("int");
+
+                    b.Property<double>("DetectionConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<int>("EyesOpen")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FaceDarkness")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FaceMask")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<double>("GenderConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<int>("GenderFemale")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenderMale")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Glasses")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GlassesReflection")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GrayscaleDensity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HeadCovering")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HeavyFrameGlasses")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Interlace")
+                        .HasColumnType("int");
+
+                    b.Property<double>("LeftEyeCenterConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LeftEyeCenterX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LeftEyeCenterY")
+                        .HasColumnType("float");
+
+                    b.Property<int>("LookingAway")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MotionBlur")
+                        .HasColumnType("int");
+
+                    b.Property<double>("MouthCenterConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MouthCenterX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MouthCenterY")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MouthOpen")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Mustache")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NeurotecOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Noise")
+                        .HasColumnType("int");
+
+                    b.Property<double>("NoseTipConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<double>("NoseTipX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("NoseTipY")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Occlusion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Overexposure")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("PersonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PhotoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Pitch")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Pixelation")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Pose")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quality")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RedEye")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Resolution")
+                        .HasColumnType("int");
+
+                    b.Property<double>("RightEyeCenterConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RightEyeCenterX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RightEyeCenterY")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Roll")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Saturation")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sharpness")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkinReflection")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkinTone")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Smile")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Template")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("TokenImageQuality")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Underexposure")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WashedOut")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Width")
+                        .HasColumnType("float");
+
+                    b.Property<double>("X")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Yaw")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComparisonOrder")
+                        .IsUnique();
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("Face", (string)null);
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.FaceComparison", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("Face1Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Face2Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool?>("IsSamePerson")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Face2Id");
+
+                    b.HasIndex("Face1Id", "Face2Id")
+                        .IsUnique();
+
+                    b.ToTable("FaceComparison", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_FaceComparison_OrderedPair", "[Face1Id] < [Face2Id]");
+                        });
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Gallery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Gallery", (string)null);
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Person", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Person", (string)null);
+                });
+
             modelBuilder.Entity("FormAI.Api.Models.Photo", b =>
                 {
                     b.Property<long>("Id")
@@ -28,6 +320,9 @@ namespace FormAI.Api.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("GalleryId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsFaceDetected")
                         .HasColumnType("bit");
@@ -44,7 +339,73 @@ namespace FormAI.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GalleryId");
+
                     b.ToTable("Photo", (string)null);
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Face", b =>
+                {
+                    b.HasOne("FormAI.Api.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
+
+                    b.HasOne("FormAI.Api.Models.Photo", "Photo")
+                        .WithMany("Faces")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+
+                    b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.FaceComparison", b =>
+                {
+                    b.HasOne("FormAI.Api.Models.Face", "Face1")
+                        .WithMany("FaceComparisonsAsFace1")
+                        .HasForeignKey("Face1Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FormAI.Api.Models.Face", "Face2")
+                        .WithMany("FaceComparisonsAsFace2")
+                        .HasForeignKey("Face2Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Face1");
+
+                    b.Navigation("Face2");
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Photo", b =>
+                {
+                    b.HasOne("FormAI.Api.Models.Gallery", "Gallery")
+                        .WithMany("Photo")
+                        .HasForeignKey("GalleryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gallery");
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Face", b =>
+                {
+                    b.Navigation("FaceComparisonsAsFace1");
+
+                    b.Navigation("FaceComparisonsAsFace2");
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Gallery", b =>
+                {
+                    b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("FormAI.Api.Models.Photo", b =>
+                {
+                    b.Navigation("Faces");
                 });
 #pragma warning restore 612, 618
         }

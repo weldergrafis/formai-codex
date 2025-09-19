@@ -7,7 +7,11 @@ namespace FormAI.Api.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     // DbSet for storing photos
+    public DbSet<Gallery> Galleries => Set<Gallery>();
     public DbSet<Photo> Photos => Set<Photo>();
+    public DbSet<Face> Faces => Set<Face>();
+    public DbSet<FaceComparison> FaceComparisons => Set<FaceComparison>();
+    public DbSet<Person> People => Set<Person>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -29,5 +33,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             modelBuilder.Entity(entity.Name).ToTable(entity.ClrType.Name);
         }
+
+        modelBuilder.Entity<FaceComparison>(b =>
+        {
+            // Garante Face1Id < Face2Id no banco
+            b.ToTable(t => t.HasCheckConstraint(
+                "CK_FaceComparison_OrderedPair",
+                "[Face1Id] < [Face2Id]"
+            ));
+
+            // Comentário: sem cascata nas duas FKs para evitar multiple cascade paths
+            b.HasOne(x => x.Face1)
+                .WithMany(f => f.FaceComparisonsAsFace1)
+                .HasForeignKey(x => x.Face1Id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            b.HasOne(x => x.Face2)
+                .WithMany(f => f.FaceComparisonsAsFace2)
+                .HasForeignKey(x => x.Face2Id)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
+
     }
 }

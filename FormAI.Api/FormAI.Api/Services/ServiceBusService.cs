@@ -6,6 +6,7 @@ namespace FormAI.Api.Services
     {
         Resize,
         DetectFaces,
+        CompareFaces
     }
 
     public class ServiceBusService
@@ -37,6 +38,7 @@ namespace FormAI.Api.Services
         {
             if (queue == Queue.Resize) return "resize";
             else if (queue == Queue.DetectFaces) return "detect-faces";
+            else if (queue == Queue.CompareFaces) return "compare-faces";
             else throw new Exception($"Queue não suportada: {queue}");
         }
     }
